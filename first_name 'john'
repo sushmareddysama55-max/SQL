@@ -1,0 +1,3 @@
+How do you find employees whose first name contains 'John'?
+
+select *from hr.employees where first_name like '%John%'
