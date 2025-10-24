@@ -1,0 +1,3 @@
+How do you group employees by department_id and count how many employees each department has?
+
+select department_id,count(*)from hr.employees GROUP BY department_id;
