@@ -1,0 +1,3 @@
+how do you calculate the average salary of all employees?
+
+select AVG(salary) AS average_salary from hr.employees;
