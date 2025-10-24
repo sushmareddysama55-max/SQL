@@ -1,0 +1,3 @@
+How do you list employees ordered by last_name in ascending order?
+
+select *from hr.employees order by last_name ASC;
