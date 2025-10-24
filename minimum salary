@@ -1,0 +1,3 @@
+How do you find the minimum salary in the hr.employees table?
+
+select MIN(salary) AS minimum_salary from hr.employees;
