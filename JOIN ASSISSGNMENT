@@ -1,0 +1,85 @@
+select *from scott.EMP
+select *from scott.DEPT
+
+  List employee with department name cloumns:empno,ename,job,dname,loc
+select e.EMPNO,e.ENAME,e.JOB,d.DNAME,d.LOC 
+FROM SCOTT.EMP e
+INNER JOIN SCOTT.DEPT d ON e.DEPTNO = d.DEPTNO;
+
+  List employees who work in NEW YORK
+select e.ENAME
+FROM SCOTT.EMP e
+JOIN SCOTT.DEPT d ON e.DEPTNO = d.DEPTNO 
+WHERE d.LOC = 'NEW YORK';
+
+  List employees with their manager name
+select e.ENAME AS EMPLOYEE,m.ENAME AS MANAGER
+FROM SCOTT .EMP e
+LEFT JOIN SCOTT.EMP m ON e.MGR = m.EMPNO
+
+  List departments without any employees
+select d.DNAME
+FROM SCOTT.DEPT d 
+LEFT JOIN SCOTT.EMP e ON d.DEPTNO = e.DEPTNO
+WHERE e.EMPNO IS NULL
+
+  Show employees who earn more than their manager
+select e.ENAME AS EMPLOYEE, e.SAL AS EMP_SAL,m.ENAME AS MANAGER, m.SAL AS MGR_SAL
+FROM SCOTT.EMP e
+JOIN SCOTT.EMP m ON e.MGR = m.EMPNO
+WHERE e.SAL > m.SAL; 
+
+  List department, number of employees, and total salary
+SELECT d.DNAME, COUNT(e.EMPNO) AS TOTAL_EMPLOYEES,SUM(e.SAL) AS TOTAL_SALARY
+FROM SCOTT.DEPT d
+LEFT JOIN SCOTT.EMP e ON d.DEPTNO = e.DEPTNO
+GROUP BY d.DNAME;
+
+  List employees hired in the same department as scott
+select e.ENAME
+FROM SCOTT.EMP e
+WHERE e.DEPTNO =(SELECT DEPTNO FROM SCOTT.EMP WHERE ENAME = 'SCOTT');
+
+  List employees and their manager, but include employees with no manager
+select e.ENAME AS EMPLOYEE,m.ENAME AS MANAGER
+FROM SCOTT .EMP e
+LEFT JOIN SCOTT.EMP m ON e.MGR = m.EMPNO;
+
+  Show employees who work in same department as somebody else
+select e1.ENAME
+FROM SCOTT.EMP e1
+WHERE EXISTS(SELECT 1 FROM SCOTT.EMP e2 WHERE e1.DEPTNO = e2.DEPTNO AND e1.EMPNO !=e2.EMPNO);
+
+
+  Show department with highest paid employee
+select d.DNAME, e.ENAME,e.SAL 
+FROM SCOTT.EMP e 
+JOIN SCOTT.DEPT d ON e.DEPTNO =d.DEPTNO
+WHERE e.SAL=(SELECT MAX(SAL)FROM SCOTT.EMP);
+
+  list employees along with department, even if department is NULL
+SELECT e.ENAME,d.DNAME
+FROM SCOTT.EMP e
+LEFT join scott.DEPT d ON e. DEPTNO = d.DEPTNO;  
+
+  list all departments and all employees (even if no match on either side)
+SELECT e.ENAME, d.DNAME 
+FROM SCOTT.EMP e
+full OUTER JOIN SCOTT.DEPT d ON e.DEPTNO = d.DEPTNO;  
+
+  show employees with manager name in the same department
+SELECT e.ENAME AS EMPLOYEE, m.ENAME AS MANAGER
+FROM SCOTT.EMP e 
+JOIN SCOTT.EMP m ON e.MGR = m.EMPNO
+WHERE e.DEPTNO = m.DEPTNO;  
+
+  show employees who are managers
+SELECT DISTINCT m.MGR 
+FROM SCOTT.EMP m
+JOIN SCOTT.EMP e ON e.MGR = m.EMPNO; 
+
+  Display employees whose manager works in a different department
+SELECT e.ENAME AS EMPLOYEE,m.ENAME AS MANAGER
+FROM SCOTT.EMP e
+JOIN SCOTT.EMP m ON e.MGR = m.DEPTNO
+WHERE e.deptno<>m.DEPTNO;
